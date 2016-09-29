@@ -76,7 +76,6 @@ Node* Skiplist::insert(const int data)
 	std::stack<Node*> *visited = new std::stack<Node*>;
 
 	if (*(_search(data, visited)) == data) {
-		printf("%d is already in the list --> List not changed!\n", data);
 		return _head;
 	}
 	
@@ -85,9 +84,9 @@ Node* Skiplist::insert(const int data)
 	Node *tmp;
 
 	int level = 0;
-	
+	bool over = false;
 
-	while (!visited->empty())
+	while (!visited->empty() && !over)
 	{
 		tmp = visited->top();
 		visited->pop();
@@ -110,10 +109,10 @@ Node* Skiplist::insert(const int data)
 				tmp->setNext(level, node);
 				++level;
 			}
+			over = node->getLevel() <= tmp->getLevel();
 		}
 	}
 	
-
 	return _head;
 }
 
