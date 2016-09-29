@@ -1,9 +1,12 @@
+#pragma once
+#include <vector>
+
 class Node {
 	int _level;
 	int _data;
-
-	Node* _next[30];
-
+	
+	std::vector<Node*> _next;
+		
 public:
 
 	// Constructor
@@ -13,33 +16,31 @@ public:
 	~Node();
 
 	// Getters
-	int getData() {
-		return _data;
-	}
-
-	int getLevel() {
-		return _level;
-	}
-
-	Node *getNext(int level = 0) {
-		return _next[level];
-	}
+	int getData();
+	int getLevel();
+	
+	Node *getNext(int level = 0);
 
 	// Setters
-	void setNext(int level, Node* obj) {
-		_next[level] = obj;
-	}
+	void setNext(int level, Node* obj);
 
 	void incLevel();
 	void incLevel(Node* obj);
 
 	// Comparsion operators
-	bool operator ==(const int data) {
-		return _data == data;
-	}
+	bool operator ==(const Node& obj);
+	bool operator ==(const int data);
 
-	bool operator <=(const int data) {
-		return _data <= data;
-	}
+	bool operator  >(const Node& obj);
+	bool operator  >(const int data);
+
+	bool operator  <(const Node& obj);
+	bool operator  <(const int data);
+
+	bool operator >=(const Node& obj);
+	bool operator >=(const int data);
+
+	bool operator <=(const Node& obj);
+	bool operator <=(const int data);
 
 };
