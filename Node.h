@@ -42,4 +42,7 @@ public:
 		return _data <= data;
 	}
 
+	bool operator !=(const int data) {
+		return _data != data;
+	}
 };
