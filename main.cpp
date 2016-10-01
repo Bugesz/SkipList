@@ -145,27 +145,29 @@ int main()
 	srand(12);
 
 	clock_t begin;
-
-	int SIZE = 1000000;
+	int SIZE = 100000;
 
 	begin = clock();
 	for (int i = 0; i < SIZE; i++) {
 		tmp.insert(rand());
 	}
 	
-	//tmp.print();
-	//cout << endl << endl;
-
 	cout << "Running time in seconds: \t" << double(clock() - begin) / CLOCKS_PER_SEC << endl;
-
-	
 
 	begin = clock();
 	for (int i = 0; i < SIZE; i++) {
 		tmp.search(rand());
 	}
 	cout << "Running time in seconds: \t" << double(clock() - begin) / CLOCKS_PER_SEC << endl;
+
 	
+	begin = clock();
+	for (int i = 0; i < SIZE; i++) {
+		tmp.remove(rand());
+	}
+	cout << "Running time in seconds: \t" << double(clock() - begin) / CLOCKS_PER_SEC << endl;
+	
+
 	cout << endl;
 
 	begin = clock();
@@ -174,12 +176,12 @@ int main()
 	}
 	cout << "Running time in seconds: \t" << double(clock() - begin) / CLOCKS_PER_SEC << endl;
 
-
 	begin = clock();
 	for (int i = 0; i < SIZE; i++) {
 		tree.search(rand());
 	}
 	cout << "Running time in seconds: \t" << double(clock() - begin) / CLOCKS_PER_SEC << endl;
+
 
 	cout << endl;
 	getchar();
