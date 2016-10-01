@@ -23,17 +23,18 @@ Node* Skiplist::_search(const int data, std::stack<Node*>* s)
 		while(tmp->getNext(level) && *(tmp->getNext(level)) <= data)
 		{
 
+			if (s)
+			{
+				s->push(tmp);
+			}
+
+
 			if (*(tmp->getNext(level)) == data) 
 			{
 				return tmp->getNext(level);
 			}
 			else
 			{
-				if (s != NULL)
-				{
-					s->push(tmp);
-				}
-
 				tmp = tmp->getNext(level);
 			}
 		}
@@ -113,6 +114,44 @@ Node* Skiplist::insert(const int data)
 		}
 	}
 	
+	return _head;
+}
+
+Node* Skiplist::remove(const int data)
+{
+	std::stack<Node*> *visited = new std::stack<Node*>;
+
+	Node *old;
+	Node *tmp;
+
+	old = _search(data, visited);
+
+	// Item not in the list
+	if (*old != data) {
+		return _head;
+	}
+
+	int level = 0;
+	bool over = false;
+
+	while (!visited->empty() && !over)
+	{
+		tmp = visited->top();
+		visited->pop();
+		while (level <= std::min(old->getLevel(), tmp->getLevel())) {
+			tmp->setNext(level, old->getNext(level));
+			++level;
+		}
+		over = old->getLevel() <= tmp->getLevel();
+		
+	}
+
+
+	if (old != _head)
+	{
+		delete old;
+	}
+
 	return _head;
 }
 
