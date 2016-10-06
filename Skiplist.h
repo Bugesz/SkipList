@@ -12,9 +12,13 @@ class Skiplist {
 
 	Comparator _comp;
 
+	unsigned short _max_level;
+	double _prob;
+
 public:
 
 	Skiplist();
+	Skiplist(unsigned short max_level, double prob);
 
 	~Skiplist();
 
@@ -28,40 +32,30 @@ public:
 
 };
 
-template <class T, typename Comparator>
-Node<T>* Skiplist<T, Comparator>::_search(const T data, std::stack<Node<T>*>* s)
-{
-	Node<T> *tmp = _head;
-	int level = _head->getLevel();
-	while (level >= 0)
-	{
-		while (tmp->getNext(level) != nullptr && (_comp(tmp->getNext(level)->getData(), data) || (*(tmp->getNext(level)) == data)))
-		{
 
-			if (s) { s->push(tmp); }
-
-			if (*(tmp->getNext(level)) == data)
-			{
-				return tmp->getNext(level);
-			}
-			else
-			{
-				tmp = tmp->getNext(level);
-			}
-		}
-		--level;
-	}
-
-	if (s) { s->push(tmp); }
-
-	return tmp;
-}
 
 template <class T, typename Comparator>
-Skiplist<T, Comparator>::Skiplist()
+Skiplist<T, Comparator>::Skiplist() : _max_level(10), _prob(0.5)
 {
 	srand((unsigned int)time(NULL));
 	_head = new Node<T>(NULL);
+}
+
+template <class T, typename Comparator>
+Skiplist<T, Comparator>::Skiplist(unsigned short max_level, double prob): _max_level(max_level)
+{
+	if (prob >= 1.0) {
+		printf("Probability is greater or equal than 1.\nUsing 0.5 instead!\n\n");
+		_prob = 0.5;
+	}
+	else {
+		_prob = prob;
+	}
+
+	
+
+	srand((unsigned int)time(NULL));
+	_head = new Node<T>(NULL, _max_level, _prob);
 }
 
 template <class T, typename Comparator>
@@ -93,7 +87,7 @@ Node<T>* Skiplist<T, Comparator>::insert(const T data)
 	}
 
 
-	Node<T> *node = new Node<T>(data);
+	Node<T> *node = new Node<T>(data, _max_level, _prob);
 	Node<T> *tmp;
 
 	int level = 0;
@@ -197,4 +191,33 @@ void Skiplist<T, Comparator>::print()
 		printf("\n");
 	}
 
+}
+
+template <class T, typename Comparator>
+Node<T>* Skiplist<T, Comparator>::_search(const T data, std::stack<Node<T>*>* s)
+{
+	Node<T> *tmp = _head;
+	int level = _head->getLevel();
+	while (level >= 0)
+	{
+		while (tmp->getNext(level) != nullptr && (_comp(tmp->getNext(level)->getData(), data) || (*(tmp->getNext(level)) == data)))
+		{
+
+			if (s) { s->push(tmp); }
+
+			if (*(tmp->getNext(level)) == data)
+			{
+				return tmp->getNext(level);
+			}
+			else
+			{
+				tmp = tmp->getNext(level);
+			}
+		}
+		--level;
+	}
+
+	if (s) { s->push(tmp); }
+
+	return tmp;
 }

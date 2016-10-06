@@ -10,7 +10,7 @@ class Node {
 public:
 
 	// Constructor
-	Node<T>(T data);
+	Node<T>(T data, unsigned int max_level, double prob);
 
 	// Destructor
 	~Node<T>();
@@ -63,14 +63,15 @@ public:
 };
 
 template <class T>
-Node<T>::Node(T data)
-{
-	_data  = data;
+Node<T>::Node(T data, unsigned int max_level, double prob) {
+	_data = data;
 	_level = -1;
 	do
 	{
 		_next[++_level] = nullptr;
-	} while (rand() % 10 <= 5);
+		//printf("%d\n", _level);
+	} while (((double)rand() / (RAND_MAX)) < prob && _level <= max_level);
+
 }
 
 template <class T>
