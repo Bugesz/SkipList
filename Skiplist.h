@@ -1,14 +1,16 @@
 #pragma once
 #include "Node.h"
-#include <vector>
 #include <stack>
+#include <functional>
 
-template <class T>
+template <class T, typename Comparator = std::less<T> >
 class Skiplist {
 	
 	Node<T>* _head;
 
 	Node<T>* _search(const T data, std::stack<Node<T>*> *s = NULL);
+
+	Comparator _comp;
 
 public:
 
@@ -26,32 +28,17 @@ public:
 
 };
 
-template <class T>
-Node<T>* Skiplist<T>::_search(const T data, std::stack<Node<T>*>* s)
+template <class T, typename Comparator>
+Node<T>* Skiplist<T, Comparator>::_search(const T data, std::stack<Node<T>*>* s)
 {
 	Node<T> *tmp = _head;
-	
 	int level = _head->getLevel();
-
-
-	if (s != NULL)
-	{
-		while (!s->empty())
-		{
-			s->pop();
-		}
-	}
-
 	while (level >= 0)
 	{
-		while (tmp->getNext(level) != nullptr && *(tmp->getNext(level)) <= data)
+		while (tmp->getNext(level) != nullptr && (_comp(tmp->getNext(level)->getData(), data) || (*(tmp->getNext(level)) == data)))
 		{
 
-			if (s)
-			{
-				s->push(tmp);
-			}
-
+			if (s) { s->push(tmp); }
 
 			if (*(tmp->getNext(level)) == data)
 			{
@@ -65,25 +52,22 @@ Node<T>* Skiplist<T>::_search(const T data, std::stack<Node<T>*>* s)
 		--level;
 	}
 
-	if (s)
-	{
-		s->push(tmp);
-	}
+	if (s) { s->push(tmp); }
 
 	return tmp;
 }
 
-template <class T>
-Skiplist<T>::Skiplist()
+template <class T, typename Comparator>
+Skiplist<T, Comparator>::Skiplist()
 {
 	srand((unsigned int)time(NULL));
 	_head = new Node<T>(NULL);
 }
 
-template <class T>
-Skiplist<T>::~Skiplist()
+template <class T, typename Comparator>
+Skiplist<T, Comparator>::~Skiplist()
 {
-	Node<T> *tmp;
+	Node<T> *tmp = nullptr;
 
 	while (_head != NULL) {
 		tmp = _head;
@@ -93,14 +77,14 @@ Skiplist<T>::~Skiplist()
 	}
 }
 
-template <class T>
-bool Skiplist<T>::search(const T data)
+template <class T, typename Comparator>
+bool Skiplist<T, Comparator>::search(const T data)
 {
-	return 0;//*(_search(data)) == data;
+	return *(_search(data)) == data;
 }
 
-template <class T>
-Node<T>* Skiplist<T>::insert(const T data)
+template <class T, typename Comparator>
+Node<T>* Skiplist<T, Comparator>::insert(const T data)
 {
 	std::stack<Node<T>*> *visited = new std::stack<Node<T>*>;
 
@@ -145,8 +129,8 @@ Node<T>* Skiplist<T>::insert(const T data)
 	return _head;
 }
 
-template <class T>
-Node<T>* Skiplist<T>::remove(const T data)
+template <class T, typename Comparator>
+Node<T>* Skiplist<T, Comparator>::remove(const T data)
 {
 	std::stack<Node<T>*> *visited = new std::stack<Node<T>*>;
 
@@ -184,8 +168,8 @@ Node<T>* Skiplist<T>::remove(const T data)
 	return _head;
 }
 
-template <class T>
-void Skiplist<T>::print()
+template <class T, typename Comparator>
+void Skiplist<T, Comparator>::print()
 {
 	Node<T> *tmp;
 	int z = _head->getLevel();
