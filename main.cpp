@@ -139,31 +139,19 @@ void btree::destroy_tree()
 int main()
 {
 
-	Skiplist<double> tmp;
+	Skiplist tmp;
 	btree tree;
 
 	srand(12);
 
-
 	clock_t begin;
-	//int SIZE = 1000000;
-	int SIZE = 10;
+	int SIZE = 100000;
+
 	begin = clock();
 	for (int i = 0; i < SIZE; i++) {
 		tmp.insert(rand());
 	}
 	
-
-
-	if (SIZE <= 10) {
-
-		tmp.insert(5);
-		tmp.search(5);
-		tmp.print();
-		printf("Press ENTER to leave...\n");
-		getchar();
-		return 0;
-	}
 	cout << "Running time in seconds: \t" << double(clock() - begin) / CLOCKS_PER_SEC << endl;
 
 	begin = clock();

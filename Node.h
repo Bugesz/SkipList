@@ -41,24 +41,12 @@ public:
 		return _data == data;
 	}
 
-	bool operator !=(const T data) {
-		return _data != data;
-	}
-
 	bool operator <=(const T data) {
 		return _data <= data;
 	}
 
-	bool operator >=(const T data) {
-		return _data >= data;
-	}
-
-	bool operator  <(const T data) {
-		return _data < data;
-	}
-
-	bool operator  >(const T data) {
-		return _data > data;
+	bool operator !=(const T data) {
+		return _data != data;
 	}
 };
 
