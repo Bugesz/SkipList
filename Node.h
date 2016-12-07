@@ -1,3 +1,5 @@
+#include <stdlib.h>
+
 template <class T>
 class Node {
 
@@ -5,7 +7,7 @@ class Node {
 	
 	T _data;
 
-	Node<T>* _next[30];
+	Node<T>* _next[50];
 
 public:
 
@@ -68,7 +70,7 @@ Node<T>::Node(T data, unsigned int max_level, double prob) {
 	_level = -1;
 	do
 	{
-		_next[++_level] = nullptr;
+		_next[++_level] = NULL;
 		//printf("%d\n", _level);
 	} while (((double)rand() / (RAND_MAX)) < prob && _level <= max_level);
 
@@ -82,7 +84,7 @@ Node<T>::~Node()
 template <class T>
 void Node<T>::incLevel()
 {
-	_next[++_level] = nullptr;
+	_next[++_level] = NULL;
 }
 
 template <class T>

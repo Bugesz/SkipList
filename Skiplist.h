@@ -1,7 +1,11 @@
-#pragma once
 #include "Node.h"
 #include <stack>
 #include <functional>
+#include <stdlib.h>
+#include <stdio.h>
+#include <iostream>
+
+using namespace std;
 
 template <class T, typename Comparator = std::less<T> >
 class Skiplist {
@@ -38,7 +42,7 @@ template <class T, typename Comparator>
 Skiplist<T, Comparator>::Skiplist() : _max_level(10), _prob(0.5)
 {
 	srand((unsigned int)time(NULL));
-	_head = new Node<T>(NULL);
+	_head = new Node<T>(NULL, _max_level, _prob);
 }
 
 template <class T, typename Comparator>
@@ -61,7 +65,7 @@ Skiplist<T, Comparator>::Skiplist(unsigned short max_level, double prob): _max_l
 template <class T, typename Comparator>
 Skiplist<T, Comparator>::~Skiplist()
 {
-	Node<T> *tmp = nullptr;
+	Node<T> *tmp = NULL;
 
 	while (_head != NULL) {
 		tmp = _head;
@@ -200,7 +204,7 @@ Node<T>* Skiplist<T, Comparator>::_search(const T data, std::stack<Node<T>*>* s)
 	int level = _head->getLevel();
 	while (level >= 0)
 	{
-		while (tmp->getNext(level) != nullptr && (_comp(tmp->getNext(level)->getData(), data) || (*(tmp->getNext(level)) == data)))
+		while (tmp->getNext(level) != NULL && (_comp(tmp->getNext(level)->getData(), data) || (*(tmp->getNext(level)) == data)))
 		{
 
 			if (s) { s->push(tmp); }

@@ -7,20 +7,6 @@
 
 using namespace std;
 
-typedef int Val_TYPE;
-typedef vector<Val_TYPE> Container_TYPE;
-typedef priority_queue<Val_TYPE, Container_TYPE> pri_queue;
-
-class Queue : public pri_queue {
-public:
-	Container_TYPE::iterator begin() {
-		return pri_queue::c.begin();
-	}
-	Container_TYPE::iterator end() {
-		return pri_queue::c.end();
-	}
-}Q;
-
 ///////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////
@@ -139,24 +125,20 @@ void btree::destroy_tree()
 int main()
 {
 
-	Skiplist<double> tmp;
+	Skiplist<int> tmp(50,0.65);
 	btree tree;
 
-	srand(12);
-
-
 	clock_t begin;
-	//int SIZE = 1000000;
-	int SIZE = 10;
+	int SIZE = 1000000;
+	
+	//SIZE = 15;
+
 	begin = clock();
 	for (int i = 0; i < SIZE; i++) {
-		tmp.insert(rand());
+		tmp.insert(rand()%SIZE);
 	}
 	
-
-
-	if (SIZE <= 10) {
-
+	if (SIZE <= 15) {
 		tmp.insert(5);
 		tmp.search(5);
 		tmp.print();
@@ -164,64 +146,43 @@ int main()
 		getchar();
 		return 0;
 	}
-	cout << "Running time in seconds: \t" << double(clock() - begin) / CLOCKS_PER_SEC << endl;
+
+	cout << "Building..." << endl;
+	cout << "Running time in seconds: \t" << double(clock() - begin) / CLOCKS_PER_SEC << "s" <<endl;
+
 
 	begin = clock();
 	for (int i = 0; i < SIZE; i++) {
-		tmp.search(rand());
+		tmp.search(rand()%SIZE);
 	}
-	cout << "Running time in seconds: \t" << double(clock() - begin) / CLOCKS_PER_SEC << endl;
+	cout << "Searching..." << endl;
+	cout << "Running time in seconds: \t" << double(clock() - begin) / CLOCKS_PER_SEC << "s" <<endl;
 
 	
 	begin = clock();
 	for (int i = 0; i < SIZE; i++) {
-		tmp.remove(rand());
+		tmp.remove(rand()%SIZE);
 	}
-	cout << "Running time in seconds: \t" << double(clock() - begin) / CLOCKS_PER_SEC << endl;
+	cout << "Removing..." << endl;
+	cout << "Running time in seconds: \t" << double(clock() - begin) / CLOCKS_PER_SEC << "s" <<endl;
 	
 
 	cout << endl;
 
 	begin = clock();
 	for (int i = 0; i < SIZE; i++) {
-		tree.insert(rand());
+		tree.insert(rand()%SIZE);
 	}
-	cout << "Running time in seconds: \t" << double(clock() - begin) / CLOCKS_PER_SEC << endl;
+	cout << "Tree insert..." << endl;
+	cout << "Running time in seconds: \t" << double(clock() - begin) / CLOCKS_PER_SEC << "s" <<endl;
 
 	begin = clock();
 	for (int i = 0; i < SIZE; i++) {
-		tree.search(rand());
+		tree.search(rand()%SIZE);
 	}
-	cout << "Running time in seconds: \t" << double(clock() - begin) / CLOCKS_PER_SEC << endl;
-
+	cout << "Tree search..." << endl;
+	cout << "Running time in seconds: \t" << double(clock() - begin) / CLOCKS_PER_SEC << "s" <<endl;
 
 	cout << endl;
-	getchar();
-	return 0;
-
-	begin = clock();
-	for (int i = 0; i < SIZE; i++) {
-		Q.push(rand());
-	}
-	cout << "Running time in seconds: \t" << double(clock() - begin) / CLOCKS_PER_SEC << endl;
-
-	
-	begin = clock();
-	for (int i = 0; i < SIZE; i++) {
-		int z = rand();
-		for (vector<int>::iterator p = Q.begin(); p != Q.end(); p++)
-		{
-			if (*p == z) {
-				break;
-			}
-		}
-	}
-	cout << "Running time in seconds: \t" << double(clock() - begin) / CLOCKS_PER_SEC << endl;
-	cout << endl << endl;
-	
-
-
-	
-	getchar();
 	return 0;
 }
